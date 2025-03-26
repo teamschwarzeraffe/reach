@@ -1,12 +1,12 @@
-export const GET = async (context) => {
-  const { request } = context;
-  //   const { url } = request;
-  const url = "test";
+export let GET = async (context) => {
+  let { request } = context;
+  //   let { url } = request;
+  let url = "test";
 
-  const cache = context.locals.runtime.caches.default;
+  let cache = context.locals.runtime.caches.default;
 
   let cacheFound = false;
-  const cacheResponse = await cache.match(url);
+  let cacheResponse = await cache.match(url);
   if (cacheResponse) {
     console.log("Cache hit");
     cacheFound = true;
