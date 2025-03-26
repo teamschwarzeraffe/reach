@@ -1,4 +1,4 @@
-export const return200 = (data = {}) => {
+export let return200 = (data = {}) => {
   return new Response(
     JSON.stringify({
       data,
@@ -7,7 +7,7 @@ export const return200 = (data = {}) => {
   );
 };
 
-export const return200WithObject = (object) => {
+export let return200WithObject = (object) => {
   return new Response(
     JSON.stringify(
       object,
@@ -16,7 +16,7 @@ export const return200WithObject = (object) => {
   );
 };
 
-export const return201 = (message = "Record Created") => {
+export let return201 = (message = "Record Created") => {
   return new Response(
     JSON.stringify({
       message,
@@ -25,7 +25,7 @@ export const return201 = (message = "Record Created") => {
   );
 };
 
-export const return204 = (message = "Record Deleted") => {
+export let return204 = (message = "Record Deleted") => {
   return new Response(
     JSON.stringify({
       message,
@@ -34,7 +34,7 @@ export const return204 = (message = "Record Deleted") => {
   );
 };
 
-export const return400 = (message = "Unauthorized") => {
+export let return400 = (message = "Unauthorized") => {
   return new Response(
     JSON.stringify({
       message,
@@ -43,7 +43,7 @@ export const return400 = (message = "Unauthorized") => {
   );
 };
 
-export const return401 = (message = "Unauthorized") => {
+export let return401 = (message = "Unauthorized") => {
   return new Response(
     JSON.stringify({
       message,
@@ -52,7 +52,7 @@ export const return401 = (message = "Unauthorized") => {
   );
 };
 
-export const return404 = (message = "Not Found") => {
+export let return404 = (message = "Not Found") => {
   return new Response(
     JSON.stringify({
       message,
@@ -61,7 +61,7 @@ export const return404 = (message = "Not Found") => {
   );
 };
 
-export const return500 = (message = "Internal Server Error") => {
+export let return500 = (message = "Internal Server Error") => {
   return new Response(
     JSON.stringify({
       message,
