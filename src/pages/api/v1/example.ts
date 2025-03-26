@@ -10,7 +10,7 @@ export async function GET(context) {
   return return200WithObject({ hello: "cruel world" });
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export var POST: APIRoute = async ({ request }) => {
   let body;
   try {
     body = await request.json();
@@ -20,10 +20,10 @@ export const POST: APIRoute = async ({ request }) => {
   return return201("Valid JSON body");
 };
 
-export const DELETE: APIRoute = ({ request }) => {
+export var DELETE: APIRoute = ({ request }) => {
   return return204();
 };
 
-export const ALL: APIRoute = ({ request }) => {
+export var ALL: APIRoute = ({ request }) => {
   return return200WithObject({ message: "wildcard" });
 };
