@@ -8,15 +8,15 @@ import {
 } from "@services/return-types";
 import type { APIRoute } from "astro";
 
-export const POST: APIRoute = async (context) => {
+export let POST: APIRoute = async (context) => {
 
-  const contentType = context.request.headers.get("content-type");
+  let contentType = context.request.headers.get("content-type");
   if (context.request.headers.get("content-type") === "application/json") {
     // Get the body of the request
-    const body: { email: string; password: string } = await context.request.json();
-    const { email, password } = body;
+    let body: { email: string; password: string } = await context.request.json();
+    let { email, password } = body;
 
-    const loginResult = await login(
+    let loginResult = await login(
       context.locals.runtime.env.D1,
       email,
       password
