@@ -24,8 +24,8 @@ import { kvPut } from "@services/kv";
 import { validateSessionToken } from "@services/sessions";
 import { checkToken } from "@services/token";
 
-export const GET: APIRoute = async (context) => {
-  const start = Date.now();
+export var GET: APIRoute = async (context) => {
+  var start = Date.now();
   let params: {
     table?: string;
     id?: string;
@@ -34,7 +34,7 @@ export const GET: APIRoute = async (context) => {
   } = {};
   params = context.params;
 
-  const tableName = params.table;
+  var tableName = params.table;
   let entry;
   try {
     entry = apiConfig.filter((tbl) => tbl.route === tableName)[0];
@@ -50,14 +50,14 @@ export const GET: APIRoute = async (context) => {
     );
   }
 
-  const { env } = context.locals.runtime;
-  // const db = drizzle(env.D1);
+  var { env } = context.locals.runtime;
+  // var db = drizzle(env.D1);
 
-  const request = context.request;
+  var request = context.request;
 
-  const query =
+  var query =
     request.url.indexOf("?") > 0 ? request.url.split("?")[1] : undefined;
-  const queryParams = query ? qs.parse(query, { duplicates: "combine" }) : {};
+  var queryParams = query ? qs.parse(query, { duplicates: "combine" }) : {};
 
   // console.log("queryParams", queryParams);
 
@@ -68,8 +68,8 @@ export const GET: APIRoute = async (context) => {
   }
 
   let accessControlResult = {};
-  const operationRead = entry?.access?.operation?.read;
-  const filterRead = entry?.access?.filter?.read;
+  var operationRead = entry?.access?.operation?.read;
+  var filterRead = entry?.access?.filter?.read;
   accessControlResult = (await getApiAccessControlResult(
     operationRead ?? true,
     filterRead ?? true,
@@ -112,7 +112,7 @@ export const GET: APIRoute = async (context) => {
     );
 
     if (entry.access?.item?.read) {
-      const accessControlResult = await getItemReadResult(
+      var accessControlResult = await getItemReadResult(
         entry.access.item.read,
         context,
         data
@@ -134,8 +134,8 @@ export const GET: APIRoute = async (context) => {
     //store in kv cache
     kvPut(context, context.request.url, data);
 
-    const end = Date.now();
-    const executionTime = end - start;
+    var end = Date.now();
+    var executionTime = end - start;
     data.executionTime = executionTime;
 
     return new Response(JSON.stringify(data), {
@@ -154,12 +154,12 @@ export const GET: APIRoute = async (context) => {
 
 //create single record
 //TODO: support batch inserts
-export const POST: APIRoute = async (context) => {
-  const { env } = context.locals.runtime;
+export var POST: APIRoute = async (context) => {
+  var { env } = context.locals.runtime;
 
-  const params = context.params;
+  var params = context.params;
 
-  const route = params.table;
+  var route = params.table;
   let entry;
   try {
     entry = await apiConfig.find((tbl) => tbl.route === route);
@@ -175,13 +175,13 @@ export const POST: APIRoute = async (context) => {
     );
   }
 
-  // const db = drizzle(env.D1);
+  // var db = drizzle(env.D1);
 
-  const request = context.request;
+  var request = context.request;
 
   let content: { data: any; table?: string } = { data: {} };
   content = await request.json();
-  // const table = apiConfig.find((entry) => entry.route === route).table;
+  // var table = apiConfig.find((entry) => entry.route === route).table;
   // context.env.D1DATA = context.env.D1DATA;
 
   if (entry?.hooks?.resolveInput?.create) {
@@ -195,7 +195,7 @@ export const POST: APIRoute = async (context) => {
     context,
     content.data
   );
-  const isAdminAccountCreated = context.locals.runtime.env.isAdminAccountCreated ?? true;
+  var isAdminAccountCreated = context.locals.runtime.env.isAdminAccountCreated ?? true;
   if (!authorized && isAdminAccountCreated) {
     return return401();
   }
@@ -218,7 +218,7 @@ export const POST: APIRoute = async (context) => {
       await entry.hooks.beforeOperation(content, "create", undefined, content);
     }
 
-    const result = await insertRecord(env.D1, {}, content);
+    var result = await insertRecord(env.D1, {}, content);
     console.log("create result", result);
 
     if (entry?.hooks?.afterOperation) {
@@ -242,8 +242,8 @@ export const POST: APIRoute = async (context) => {
 
 //   //delete
 //   api.delete(`/${entry.route}/:id`, async (ctx) => {
-//     const id = ctx.req.param('id');
-//     const table = ctx.req.path.split('/')[2];
+//     var id = ctx.req.param('id');
+//     var table = ctx.req.path.split('/')[2];
 //     ctx.env.D1DATA = ctx.env.D1DATA;
 
 //     if (entry.hooks?.beforeOperation) {
@@ -252,7 +252,7 @@ export const POST: APIRoute = async (context) => {
 
 //     let { includeContentType, source, ...params } = ctx.req.query();
 
-//     const accessControlResult = await getApiAccessControlResult(
+//     var accessControlResult = await getApiAccessControlResult(
 //       entry?.access?.operation?.delete || true,
 //       entry?.access?.filter?.delete || true,
 //       entry?.access?.item?.delete || true,
@@ -270,7 +270,7 @@ export const POST: APIRoute = async (context) => {
 //     }
 //     params.id = id;
 
-//     const record = await getRecords(
+//     var record = await getRecords(
 //       ctx,
 //       table,
 //       params,
@@ -281,15 +281,15 @@ export const POST: APIRoute = async (context) => {
 
 //     if (record) {
 //       console.log('content found, deleting...');
-//       const result = await deleteRecord(ctx.env.D1DATA, ctx.env.KVDATA, {
+//       var result = await deleteRecord(ctx.env.D1DATA, ctx.env.KVDATA, {
 //         id,
 //         table: table
 //       });
 //       if (entry?.hooks?.afterOperation) {
 //         await entry.hooks.afterOperation(ctx, 'delete', id, record, result);
 //       }
-//       // const kvDelete = await deleteKVById(ctx.env.KVDATA, id);
-//       // const d1Delete = await deleteD1ByTableAndId(
+//       // var kvDelete = await deleteKVById(ctx.env.KVDATA, id);
+//       // var d1Delete = await deleteD1ByTableAndId(
 //       //   ctx.env.D1DATA,
 //       //   content.data.table,
 //       //   content.data.id
