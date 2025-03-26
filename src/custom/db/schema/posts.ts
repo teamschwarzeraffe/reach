@@ -8,15 +8,15 @@ import * as comments from "./comments";
 import { isAdminOrEditor, isAdminOrUser } from "db/config-helpers";
 import type { ApiConfig } from "db/routes";
 
-export let tableName = "posts";
+export const tableName = "posts";
 
-export let route = "posts";
-export let name = "Posts";
-export let icon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+export const route = "posts";
+export const name = "Posts";
+export const icon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
 </svg>`;
 
-export let definition = {
+export const definition = {
   id: text("id").primaryKey(),
   title: text("title").notNull(),
   body: text("body").notNull(),
@@ -26,7 +26,7 @@ export let definition = {
   tags: text("tags", { mode: "json" }).$type<string[]>(),
 };
 
-export let table = sqliteTable(
+export const table = sqliteTable(
   tableName,
   {
     ...definition,
@@ -39,7 +39,7 @@ export let table = sqliteTable(
   }
 );
 
-export let relation = relations(table, ({ one, many }) => ({
+export const relation = relations(table, ({ one, many }) => ({
   user: one(users.table, {
     fields: [table.userId],
     references: [users.table.id],
@@ -48,7 +48,7 @@ export let relation = relations(table, ({ one, many }) => ({
   comments: many(comments.table),
 }));
 
-export let access: ApiConfig["access"] = {
+export const access: ApiConfig["access"] = {
   operation: {
     read: true,
     create: isAdminOrEditor,
@@ -62,7 +62,7 @@ export let access: ApiConfig["access"] = {
   //     if (isAdmin(ctx)) {
   //       return true;
   //     } else {
-  //       let user = Astro.locals.user;
+  //       const user = Astro.locals.user;
   //       if (user?.userId) {
   //         // Return filter so update doesn't happen if userId doesn't match
   //         return {
@@ -77,7 +77,7 @@ export let access: ApiConfig["access"] = {
   //     if (isAdmin(ctx)) {
   //       return true;
   //     } else {
-  //       let user = Astro.locals.user;
+  //       const user = Astro.locals.user;
   //       if (user?.userId) {
   //         // Return filter so update doesn't happen if userId doesn't match
   //         return {
@@ -95,7 +95,7 @@ export let access: ApiConfig["access"] = {
     },
   },
 };
-export let hooks: ApiConfig["hooks"] = {
+export const hooks: ApiConfig["hooks"] = {
   resolveInput: {
     create: (ctx, data) => {
       if (ctx.locals.user?.id) {
@@ -112,7 +112,7 @@ export let hooks: ApiConfig["hooks"] = {
   },
 };
 
-export let fields: ApiConfig["fields"] = {
+export const fields: ApiConfig["fields"] = {
   id: {
     type: "id",
   },
