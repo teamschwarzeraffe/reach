@@ -9,27 +9,27 @@ import en from "javascript-time-ago/locale/en";
 TimeAgo.addDefaultLocale(en);
 
 // Create formatter (English).
-const timeAgo = new TimeAgo("en-US");
+let timeAgo = new TimeAgo("en-US");
 
-export const getAdminKvData = async (context) => {
+export let getAdminKvData = async (context) => {
   try {
-    const cacheRequests = await getD1DataByTable(
+    let cacheRequests = await getD1DataByTable(
       context.locals.runtime.env.D1,
       "cacheRequests",
       {}
     );
 
-    const kvRecords = await kvGetAll(context);
+    let kvRecords = await kvGetAll(context);
 
-    const cacheRequestsCount = cacheRequests.length;
-    const kvRecordsCount = kvRecords.length;
+    let cacheRequestsCount = cacheRequests.length;
+    let kvRecordsCount = kvRecords.length;
 
-    const data = cacheRequests.map((item) => {
+    let data = cacheRequests.map((item) => {
       item.url = item.url;
       item.createdOnAgo = timeAgo.format(new Date(item.createdOn));
       item.updatedOnAgo = timeAgo.format(new Date(item.updatedOn));
 
-      const matchingKvRecord = kvRecords.find(
+      let matchingKvRecord = kvRecords.find(
         (record) => record.name === item.url
       );
       if (matchingKvRecord) {
@@ -54,13 +54,13 @@ export const getAdminKvData = async (context) => {
   }
 };
 
-export const cacheRequestInsert = async (context, d1, kv, url) => {
+export let cacheRequestInsert = async (context, d1, kv, url) => {
   try {
-    const data = { url: url };
+    let data = { url: url };
     insertD1Data(d1, kv, "cacheRequests", data);
   } catch (error) {
     console.error(error);
   }
 };
 
-export const purgeKvData = async (context) => {};
+export let purgeKvData = async (context) => {};
